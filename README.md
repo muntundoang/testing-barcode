@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QR Code Scanner
 
-## Getting Started
+A modern QR code scanner built with Next.js that supports both camera scanning and image file uploads.
 
-First, run the development server:
+## Features
+
+### 📷 Camera Scanner
+- **Real-time scanning**: Scan QR codes using your webcam or phone camera
+- **Camera switching**: Toggle between front and back cameras on mobile devices
+- **Smart scanning**: Prevents duplicate scans and provides audio feedback
+- **Mobile optimized**: Works great on both desktop and mobile devices
+
+### 📁 File Upload
+- Drag and drop support for image files
+- Support for JPG, PNG, GIF, and WebP formats
+- Automatic QR code detection and decoding
+
+### 📊 Data Processing
+- Raw data display with copy-to-clipboard functionality
+- Automatic parsing of URL-encoded JSON data
+- Structured display for parsed item information
+
+## How to Use
+
+### Camera Scanning
+1. Click "Start Camera" to access your camera
+2. Allow camera permissions when prompted
+3. Point your camera at a QR code
+4. Click "Start Scanning" to begin automatic detection
+5. Use "Switch Camera" to toggle between front/back cameras on mobile
+6. The scanner will automatically stop and display results when a QR code is detected
+
+### File Upload
+1. Either drag and drop an image file onto the upload area
+2. Or click "Choose File" to select an image from your device
+3. The QR code will be automatically detected and decoded
+
+## Camera Permissions
+
+For the camera scanner to work, you'll need to:
+- Grant camera permissions when prompted by your browser
+- Ensure you're accessing the app via HTTPS in production
+- For local development, `localhost` is automatically trusted by most browsers
+
+## Supported Browsers
+
+- Chrome/Chromium (recommended)
+- Firefox
+- Safari
+- Edge
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Mobile Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The app is fully responsive and works great on mobile devices:
+- Touch-friendly interface
+- Automatic camera selection (back camera by default)
+- Camera switching capability
+- Responsive button layout
