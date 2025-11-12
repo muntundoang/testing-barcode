@@ -1,52 +1,36 @@
-# Use the latest Node.js LTS version as the base image
+# Stage 0: Base image definition (optional, but good for consistency)
 FROM node:lts-alpine AS base
 
-# Install dependencies only when needed
+# Stage 1: Dependencies Installation
 FROM base AS deps
+
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copy package.json and package-lock.json files
-COPY package.json package-lock.json ./
+# Install dependencies (including devDependencies needed for the build)
+COPY package.json package-lock.json* ./
+RUN npm ci --prefer-offline --no-audit
 
-# Install dependencies
-RUN npm ci
-
-# Rebuild the source code only when needed
+# Stage 2: Application Build
 FROM base AS builder
 WORKDIR /app
-
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY ./ ./
 
-# Build the Next.js app
+# Build app
 RUN npm run build
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Stage 3: Production Runner
+FROM node:lts-alpine AS runner
+
+USER node
+
 WORKDIR /app
 
-ENV NODE_ENV=production
-
-# Create a non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
-# Copy public folder
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 
-# Copy standalone output
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-
-# Copy static files
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-
-USER nextjs
-
-# Expose the port that Next.js will run on
 EXPOSE 3000
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-# Start the Next.js application
 CMD ["node", "server.js"]
